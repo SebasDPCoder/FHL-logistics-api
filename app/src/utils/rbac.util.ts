@@ -1,10 +1,10 @@
 // app/src/services/rbac.service.ts
 import { getRoleById } from "../dao/role.dao"; // ya lo tienes
-import type { RoleResponseDto } from "../dto/role.dto";
+import type { RoleDTO } from "../dto/role.dto";
 
-const roleCache = new Map<number, RoleResponseDto>(); // simple in-memory cache
+const roleCache = new Map<number, RoleDTO>(); // simple in-memory cache
 
-export async function resolveRole(role_id: number): Promise<RoleResponseDto | null> {
+export async function resolveRole(role_id: number): Promise<RoleDTO | null> {
   if (roleCache.has(role_id)) return roleCache.get(role_id)!;
   const role = await getRoleById(role_id);
   if (role) roleCache.set(role_id, role);
@@ -12,7 +12,7 @@ export async function resolveRole(role_id: number): Promise<RoleResponseDto | nu
 }
 
 /** Throws if the role does not exist or is inactive */
-export async function assertActiveRole(role_id: number): Promise<RoleResponseDto> {
+export async function assertActiveRole(role_id: number): Promise<RoleDTO> {
   const role = await resolveRole(role_id);
   if (!role) throw new Error("ROLE_NOT_FOUND");
   if (!role.is_active) throw new Error("ROLE_INACTIVE");
