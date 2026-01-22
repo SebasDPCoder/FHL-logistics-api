@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+.scannerwork/
+sonar-project.properties
+
 # Build and dist files
 dist/
 build/
